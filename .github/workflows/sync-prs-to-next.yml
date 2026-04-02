@@ -28,14 +28,14 @@ env:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    # Removed the hard-coded 'wso2/product-is' repository check so this workflow
+    # runs in any fork (e.g. hesxo/product-is). The trigger conditions below
+    # are sufficient to guard when the job should execute.
     if: >
-      github.repository == 'wso2/product-is' &&
-      (
-        (github.event_name == 'workflow_run' &&
-         github.event.workflow_run.event == 'pull_request' &&
-         github.event.workflow_run.conclusion == 'success') ||
-        github.event_name == 'workflow_dispatch'
-      )
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.event == 'pull_request' &&
+       github.event.workflow_run.conclusion == 'success') ||
+      github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
